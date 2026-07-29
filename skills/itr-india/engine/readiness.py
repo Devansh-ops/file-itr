@@ -41,6 +41,7 @@ class BlockerOverridePolicy(str, Enum):
 
 class DecisionAction(str, Enum):
     ACCEPT_RISK = "accept_risk"
+    CONFIRM_CLASSIFICATION = "confirm_classification"
 
 
 @dataclass(frozen=True, slots=True)
@@ -194,6 +195,10 @@ class HumanDecision:
         object.__setattr__(self, "evidence_references", evidence)
         object.__setattr__(self, "affected_outputs", outputs)
         object.__setattr__(self, "context_fingerprint", fingerprint)
+
+    def audit_details(self) -> Mapping[str, object]:
+        """Typed subclasses extend the journal payload without mutating facts."""
+        return {}
 
 
 @dataclass(frozen=True, slots=True)
@@ -439,6 +444,8 @@ def assess_filing_readiness(
                 )
             )
             continue
+        if decision.action is not DecisionAction.ACCEPT_RISK:
+            continue
         if blocker.override_policy is BlockerOverridePolicy.PROHIBITED:
             findings.append(
                 DecisionFinding(
@@ -611,6 +618,7 @@ def _decision_json(decision: HumanDecision) -> dict[str, object]:
         "context_fingerprint": decision.context_fingerprint,
         "decided_at": decision.decided_at.isoformat(),
         "decision_id": decision.decision_id,
+        "details": decision.audit_details(),
         "evidence_references": list(decision.evidence_references),
         "reason": decision.reason,
     }

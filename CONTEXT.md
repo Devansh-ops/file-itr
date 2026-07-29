@@ -73,6 +73,21 @@ the source account's FIFO lots and recreates them in the destination without
 changing their dates or basis.
 _Avoid_: Sale and repurchase, fresh acquisition
 
+**Statutory fund classification**:
+The tax category established from a fund's evidenced portfolio composition and
+legal thresholds for the relevant period, independent of its marketing name.
+_Avoid_: Scheme category, fund name
+
+**Primary classification evidence**:
+An AIS/SFT observation or period-specific AMC, SEBI, or AMFI source that states
+the portfolio facts needed to derive a statutory fund classification.
+_Avoid_: Search result, scheme name, remembered category
+
+**Taxable switch**:
+One linked redemption from an outgoing mutual-fund scheme and acquisition into
+an incoming scheme; only the outgoing leg is a disposal.
+_Avoid_: Transfer, rebalance
+
 **Filing slice**:
 An auditable, deterministic subset of return schedules produced for one income
 or credit domain; it is not a complete return.

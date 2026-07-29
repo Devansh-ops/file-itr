@@ -34,7 +34,12 @@ interest) and generalised to cover both regimes and all common filer types.
 - Presumptive taxation for creators/freelancers/small business (44ADA/44AD,
   CBDT code 16021).
 - Capital gains on listed equity/MF/property (111A/112A special rates, quarterly
-  breakup for 234C) and interest/dividends in Schedule OS.
+  breakup for 234C) and interest/dividends in Schedule OS. Mutual funds use
+  period-specific portfolio evidence—not scheme names—to distinguish
+  equity-oriented, section 50AA specified, and other funds.
+- Account-local mutual-fund FIFO across purchases, dividend reinvestments,
+  switches, and own-folio transfers, reconciled to account proceeds and closing
+  positions before an auditable Schedule CG filing slice is produced.
 - Independent tax computation (both regimes) to verify the portal's math.
 - Driving the e-filing portal, with workarounds for its known quirks
   (logout pop-ups, mat-select dropdowns, the trailing-zero bug, silent
@@ -48,9 +53,13 @@ file-itr/
 ├── README.md
 ├── LICENSE
 ├── itr-india.skill                 # zipped skill — one-click install
+├── docs/
+│   └── research/
+│       └── ay2026-27-mutual-fund-classification.md
 └── skills/
     └── itr-india/
         ├── SKILL.md                # workflow + judgment (read first)
+        ├── engine/                 # normalized ledgers + deterministic compute
         └── references/
             ├── tax-regimes-and-slabs.md
             ├── deductions-old-regime.md
@@ -59,6 +68,15 @@ file-itr/
             ├── capital-gains-other-sources.md
             └── portal-workflow.md
 ```
+
+The AY 2026–27 mutual-fund engine accepts a versioned normalized ledger. Its
+public seam in `engine/mutual_funds.py` separates statutory classification,
+account-local FIFO reconciliation, and filing/audit projection. Missing,
+incomplete, or conflicting classification evidence produces explicit blockers
+and a research manifest. A typed human classification confirmation is retained
+in the hash-chained decision journal and can produce a separate provisional
+bucket view. It never changes primary-evidence totals or makes an unresolved
+classification independently filing-ready.
 
 ## Install
 

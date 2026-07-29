@@ -44,6 +44,16 @@ sales and closing positions must reconcile before the immutable Schedule CG and
 112A slice or schema-validated ITR-2 draft is produced. Deductible charges and
 non-deductible STT are reported separately.
 
+`mutual_funds.py` classifies each FY 2025–26 disposal from the primary
+portfolio evidence applicable on its date, then runs account-local FIFO across
+folios and demat accounts. It distinguishes paid, not-paid, and unknown STT,
+applies section 50AA acquisition-date rules, and carries classification,
+listing, event, and account-summary provenance into the filing audit trace.
+Missing or conflicting evidence remains visible in the research manifest and
+readiness blockers. A typed human classification confirmation is retained in
+the shared hash-chained decision journal and produces a separate provisional
+bucket view; it never rewrites primary-evidence gains or clears the blocker.
+
 Install test dependencies and run tests:
 
 ```console
