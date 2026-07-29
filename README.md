@@ -40,6 +40,9 @@ interest) and generalised to cover both regimes and all common filer types.
 - Account-local mutual-fund FIFO across purchases, dividend reinvestments,
   switches, and own-folio transfers, reconciled to account proceeds and closing
   positions before an auditable Schedule CG filing slice is produced.
+- Government securities, ordinary bonds/debentures, and MLDs through sale,
+  redemption, or maturity, with coupon/accrued-interest separation, TDS and
+  bank reconciliation, account-local FIFO, and section 50AA routing.
 - Independent tax computation (both regimes) to verify the portal's math.
 - Driving the e-filing portal, with workarounds for its known quirks
   (logout pop-ups, mat-select dropdowns, the trailing-zero bug, silent
@@ -55,7 +58,8 @@ file-itr/
 ├── itr-india.skill                 # zipped skill — one-click install
 ├── docs/
 │   └── research/
-│       └── ay2026-27-mutual-fund-classification.md
+│       ├── ay2026-27-mutual-fund-classification.md
+│       └── ay2026-27-bonds-fixed-income.md
 └── skills/
     └── itr-india/
         ├── SKILL.md                # workflow + judgment (read first)
@@ -77,6 +81,13 @@ and a research manifest. A typed human classification confirmation is retained
 in the hash-chained decision journal and can produce a separate provisional
 bucket view. It never changes primary-evidence totals or makes an unresolved
 classification independently filing-ready.
+
+The AY 2026–27 fixed-income seam in `engine/fixed_income.py` reconciles a
+versioned evidence ledger before computing coupons, accrued interest, TDS,
+cash, and FIFO capital gains. It applies section 50AA from legal form, listing,
+and event-date facts, and fails closed on dirty-price ambiguity, conflicting
+sources, defaults, restructurings, perpetuals, convertibles, and disputed
+basis.
 
 ## Install
 

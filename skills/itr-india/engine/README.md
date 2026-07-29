@@ -54,6 +54,15 @@ readiness blockers. A typed human classification confirmation is retained in
 the shared hash-chained decision journal and produces a separate provisional
 bucket view; it never rewrites primary-evidence gains or clears the blocker.
 
+`fixed_income.py` accepts a versioned normalized ledger for supported
+government securities, ordinary bonds/debentures, and MLDs. It reconciles
+coupon, accrued-interest, TDS, and bank observations; carries FIFO lots across
+own-account transfers; applies event-date listing, holding-period, and section
+50AA rules; and keeps non-deductible STT outside basis and transfer expense.
+Unresolved dirty prices, evidence conflicts, exceptional instruments, and
+zero-coupon/section-50AA collisions fail closed. Reconciled results project to
+immutable Schedule OS/TDS2/CG values with source-linked audit lines.
+
 Install test dependencies and run tests:
 
 ```console

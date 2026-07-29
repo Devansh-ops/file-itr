@@ -88,6 +88,22 @@ One linked redemption from an outgoing mutual-fund scheme and acquisition into
 an incoming scheme; only the outgoing leg is a disposal.
 _Avoid_: Transfer, rebalance
 
+**Fixed-income capital component**:
+The portion of acquisition or disposal consideration attributable to the
+security itself after separately evidenced coupon or accrued interest is
+removed.
+_Avoid_: Dirty consideration, total settlement
+
+**Fixed-income interest component**:
+Coupon or accrued interest attributable to the holding period, kept outside a
+security's capital-gain proceeds and basis.
+_Avoid_: Sale premium, capital component
+
+**Receipt observation**:
+One source's view of gross interest, tax withheld, or net cash for a
+fixed-income economic event, reconciled before filing readiness.
+_Avoid_: Economic event, final receipt
+
 **Filing slice**:
 An auditable, deterministic subset of return schedules produced for one income
 or credit domain; it is not a complete return.

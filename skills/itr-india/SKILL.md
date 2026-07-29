@@ -7,7 +7,8 @@ description: >-
   ITR, income tax return, 26AS, AIS, Form 16, old vs new regime, 115BAC, Form
   10-IEA, 80C/80D/HRA/home-loan/NPS/80G deductions, 44ADA/44AD presumptive,
   self-assessment/advance tax/234B/234C, TDS reconciliation, capital gains on
-  Indian shares/mutual funds/property, or crypto/VDA (115BBH/194S) — even if they
+  Indian shares/mutual funds/property, bonds/government securities/market-linked
+  debentures, or crypto/VDA (115BBH/194S) — even if they
   don't name the form or regime. Covers gathering and reconciling income documents, comparing both
   regimes to pick the cheaper one, choosing the form, computing tax, filling the
   portal schedule-by-schedule, fixing validation defects, and guiding payment and
@@ -185,6 +186,7 @@ limits). The very common "salaried + creator income + sold some shares" case is
 | House property | Schedule HP | Rent, municipal tax, 30% std deduction, home-loan interest (old regime) |
 | Business/profession (presumptive) | Schedule BP + P&L item 62 (44ADA) / 61 (44AD) | See `references/creator-44ada.md` |
 | Capital gains | Schedule CG | STCG/LTCG; STT-paid listed equity special-rated — `references/capital-gains-other-sources.md` |
+| Bonds / government securities / MLDs | Schedule OS + Schedule CG | Keep coupon/accrued interest separate from clean capital proceeds; load `references/fixed-income-investments.md` |
 | Interest, dividends | Schedule OS | 80TTA/80TTB only in old regime |
 | Crypto / NFT (VDA) | Schedule VDA | Flat 30% u/s 115BBH, 1% TDS u/s 194S — `references/virtual-digital-assets.md` |
 | Chapter VI-A deductions | Schedule VI-A | Mostly active only in old regime — `references/deductions-old-regime.md` |
@@ -279,6 +281,8 @@ challan and source documents.
   schedule, the no-account balance sheet.
 - `references/capital-gains-other-sources.md` — STCG/LTCG on listed equity & MF
   & property, 111A/112A rates, quarterly breakup for 234C, interest/dividend.
+- `references/fixed-income-investments.md` — normalized evidence, clean/accrued
+  settlement splits, fixed-income FIFO, section 50AA, and mandatory blockers.
 - `references/virtual-digital-assets.md` — crypto/NFT (VDA) taxation: flat 30%
   u/s 115BBH, no loss set-off, 1% TDS u/s 194S, Schedule VDA reporting.
 - `references/portal-workflow.md` — step-by-step portal navigation, every known
