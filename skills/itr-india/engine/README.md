@@ -63,6 +63,28 @@ Unresolved dirty prices, evidence conflicts, exceptional instruments, and
 zero-coupon/section-50AA collisions fail closed. Reconciled results project to
 immutable Schedule OS/TDS2/CG values with source-linked audit lines.
 
+`trading_business.py` accepts either normalized trading detail or broker trading
+summary observations for Indian equity intraday and eligible exchange-traded
+securities F&O. Detail recomputes signed trade P&L from execution prices,
+matched quantity, and contract multiplier; separately aggregates
+source-provenanced expense components; verifies section 43(5)(d) evidence; and
+computes ICAI absolute-difference/options-premium turnover and distinct loss
+categories before reconciling every broker
+account/segment summary. The section 44AB/44AD assessment uses complete
+all-business turnover and cash-flow facts and returns `required`,
+`not_required`, or `human_review_required`; one mandatory basis wins. Missing
+facts and auditor-turnover disagreements block an ITR-3 draft. Summary-only
+results stay provisional until a hash-bound human acceptance applies. The
+filing projection chooses one explicit regular-books/no-books route and adds to
+rather than replaces an existing ITR-3 business computation. One typed output
+delta collection drives both the readiness fingerprint and the JSON writes.
+A human-confirmed section 44AD route requires explicit bank/cash/other turnover
+and 6%/8%/total income amounts with their own provenance, then projects the
+official presumptive fields; missing or non-cross-tying amounts and no-books
+F&O losses block drafting. An elected 44AD route for another business also
+requires its explicit share of other-business turnover; the 44AB(a) result
+stays under human review when that split is missing.
+
 Install test dependencies and run tests:
 
 ```console

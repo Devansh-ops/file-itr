@@ -8,7 +8,8 @@ description: >-
   10-IEA, 80C/80D/HRA/home-loan/NPS/80G deductions, 44ADA/44AD presumptive,
   self-assessment/advance tax/234B/234C, TDS reconciliation, capital gains on
   Indian shares/mutual funds/property, bonds/government securities/market-linked
-  debentures, or crypto/VDA (115BBH/194S) — even if they
+  debentures, intraday equity, futures/options/F&O, derivatives, tax-audit
+  applicability, or crypto/VDA (115BBH/194S) — even if they
   don't name the form or regime. Covers gathering and reconciling income documents, comparing both
   regimes to pick the cheaper one, choosing the form, computing tax, filling the
   portal schedule-by-schedule, fixing validation defects, and guiding payment and
@@ -34,6 +35,9 @@ workflow and judgment.
 
 **Hard boundaries — Claude must NOT do these; direct the user to do them:**
 
+- Upload tax documents or their contents to an external API. Process the
+  taxpayer's files locally only. Do not ask for report redaction unless the
+  user wants it, but never include credentials or secrets in a report.
 - Enter or handle the user's portal password, bank credentials, card numbers,
   OTPs, or any secret. Logging in is the user's job.
 - Make the tax **payment** (e-Pay Tax / net-banking / UPI / card). State the
@@ -56,6 +60,9 @@ things that aren't real.
 1. **Establish the year and the person.** Confirm the Assessment Year (AY) and
    Financial Year (FY), residential status, age (senior-citizen slabs differ),
    and a rough picture of income sources. AY = FY + 1 (FY 2025-26 → AY 2026-27).
+   Treat a user's explicit residential-status statement (for example,
+   “resident Indian”) as their declared fact; do not demand independent proof
+   unless another supplied fact directly conflicts with it.
 2. **Gather every income document and every deduction proof.** Form 16(s), Form
    26AS, AIS/TIS, bank statements, broker/capital-gains statements, platform
    payout files — and, if old regime is in play, 80C/80D/home-loan/HRA/donation
@@ -187,6 +194,7 @@ limits). The very common "salaried + creator income + sold some shares" case is
 | Business/profession (presumptive) | Schedule BP + P&L item 62 (44ADA) / 61 (44AD) | See `references/creator-44ada.md` |
 | Capital gains | Schedule CG | STCG/LTCG; STT-paid listed equity special-rated — `references/capital-gains-other-sources.md` |
 | Bonds / government securities / MLDs | Schedule OS + Schedule CG | Keep coupon/accrued interest separate from clean capital proceeds; load `references/fixed-income-investments.md` |
+| Intraday equity + eligible exchange F&O | ITR-3 Part A-Trading + P&L + Schedule BP | Keep speculative intraday separate from non-speculative F&O; load `references/trading-business.md` |
 | Interest, dividends | Schedule OS | 80TTA/80TTB only in old regime |
 | Crypto / NFT (VDA) | Schedule VDA | Flat 30% u/s 115BBH, 1% TDS u/s 194S — `references/virtual-digital-assets.md` |
 | Chapter VI-A deductions | Schedule VI-A | Mostly active only in old regime — `references/deductions-old-regime.md` |
@@ -238,6 +246,21 @@ smaller banks below the reporting threshold, or foreign platforms), the income i
 exposes the user to a Section 270A penalty later. Surface the gap, explain it, and
 include the income. Being thorough here protects them.
 
+## Load investor modules only when relevant
+
+Ask whether the taxpayer has delivery equity/mutual funds, fixed-income
+securities, intraday trading, or F&O. Also inspect the documents they provide:
+if a statement mentions one of those categories, load its reference module even
+if the user did not mention it. Do not load unrelated investor modules.
+
+For intraday, futures, options, derivatives, a broker trading summary, or
+tax-audit applicability, read `references/trading-business.md` in full before
+classifying or computing. The normalized trading detail is the independent
+basis. An accompanying local AI agent may create that ledger, or the user may
+provide only broker trading summaries. Summary-only results remain provisional
+until a human explicitly accepts the evidence gap; the blocker and acceptance
+remain in the audit history.
+
 ## The portal: fill, confirm, validate
 
 The e-filing SPA has specific, repeatable quirks (logout pop-ups on navigation,
@@ -283,6 +306,9 @@ challan and source documents.
   & property, 111A/112A rates, quarterly breakup for 234C, interest/dividend.
 - `references/fixed-income-investments.md` — normalized evidence, clean/accrued
   settlement splits, fixed-income FIFO, section 50AA, and mandatory blockers.
+- `references/trading-business.md` — intraday/F&O classification, deterministic
+  P&L and ICAI turnover, broker reconciliation, tax-audit applicability, and
+  ITR-3 handoff.
 - `references/virtual-digital-assets.md` — crypto/NFT (VDA) taxation: flat 30%
   u/s 115BBH, no loss set-off, 1% TDS u/s 194S, Schedule VDA reporting.
 - `references/portal-workflow.md` — step-by-step portal navigation, every known

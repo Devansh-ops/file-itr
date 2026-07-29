@@ -43,6 +43,9 @@ interest) and generalised to cover both regimes and all common filer types.
 - Government securities, ordinary bonds/debentures, and MLDs through sale,
   redemption, or maturity, with coupon/accrued-interest separation, TDS and
   bank reconciliation, account-local FIFO, and section 50AA routing.
+- Indian equity intraday and eligible exchange-traded F&O business, with
+  trade-level P&L, ICAI turnover, broker reconciliation, separate loss buckets,
+  section 44AB/44AD applicability, and a schema-validated ITR-3 slice.
 - Independent tax computation (both regimes) to verify the portal's math.
 - Driving the e-filing portal, with workarounds for its known quirks
   (logout pop-ups, mat-select dropdowns, the trailing-zero bug, silent
@@ -88,6 +91,13 @@ cash, and FIFO capital gains. It applies section 50AA from legal form, listing,
 and event-date facts, and fails closed on dirty-price ambiguity, conflicting
 sources, defaults, restructurings, perpetuals, convertibles, and disputed
 basis.
+
+The intraday/F&O seam in `engine/trading_business.py` computes independently
+from normalized trading detail, reconciles broker summaries, and keeps
+speculative intraday separate from non-speculative F&O. It applies the
+ICAI options-premium turnover rule and evaluates tax-audit applicability from
+complete all-business facts. A broker trading summary alone stays provisional unless
+a recorded human acceptance explicitly treats the evidence gap as filing-ready.
 
 ## Install
 

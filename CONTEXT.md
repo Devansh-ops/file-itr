@@ -104,6 +104,50 @@ One source's view of gross interest, tax withheld, or net cash for a
 fixed-income economic event, reconciled before filing readiness.
 _Avoid_: Economic event, final receipt
 
+**Trading detail**:
+Normalized contract-level or settlement-level facts from which business
+profit, turnover, and expenses can be recomputed independently.
+_Avoid_: Broker P&L, trading summary
+
+**Derivative eligibility evidence**:
+The time-stamped contract-note, client/PAN, intermediary, electronic-trade,
+exchange-recognition, and source-provenance facts that establish the section
+43(5)(d) exception for one F&O economic event.
+_Avoid_: F&O label, recognised-exchange flag
+
+**Trading expense component**:
+One source-provenanced charge with a statutory/accounting type and evidenced
+business deductibility, aggregated only after trade matching.
+_Avoid_: Broker charges, expense total
+
+**Trading accounting basis**:
+The explicit regular-books or no-books route that selects mutually exclusive
+AY 2026–27 ITR-3 business fields without changing the economic result.
+_Avoid_: Filing mode, books flag
+
+**Broker trading summary**:
+A broker's segment-level observation of gross profit, gross loss, turnover,
+expenses, and net result, used to reconcile rather than replace trading detail.
+_Avoid_: Trading detail, final result
+
+**Trading turnover**:
+The segment-specific tax-audit turnover derived under the applicable
+absolute-difference and options-premium rules; it is not securities notional
+value or account cash flow.
+_Avoid_: Contract value, sale proceeds
+
+**Tax-audit applicability assessment**:
+A deterministic `required`, `not_required`, or `human_review_required` result
+that retains the threshold facts and unresolved conditions behind it.
+_Avoid_: Audit flag, recommendation
+
+**Section 44AD filing facts**:
+Human-confirmed bank-mode, cash, and other-mode turnover plus the 6%,
+8%, and total declared-income amounts needed to cross-tie Part A P&L and
+Schedule BP without inventing a rate split, retained with their own source
+provenance.
+_Avoid_: Presumptive estimate, automatic 44AD election
+
 **Filing slice**:
 An auditable, deterministic subset of return schedules produced for one income
 or credit domain; it is not a complete return.
