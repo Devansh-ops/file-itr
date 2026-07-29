@@ -1,10 +1,12 @@
 # itr-india tax engine
 
-Deterministic, auditable Indian ITR computation engine. **Phase 1 (this build):**
-input model + provenance-carrying rule-table + transaction-date-aware income
-*bucketing* + audit trace + fail-loud scope. **No rate math, no set-off yet** —
-those are Phases 2–3. Every statutory value is a `Rule` with a verified citation;
-`buckets.py` classifies each income line into a tax-treatment bucket.
+Deterministic, auditable Indian ITR computation engine. It combines versioned
+normalized inputs, a provenance-carrying rule table, transaction-date-aware
+income bucketing, filing-output audit traces, and fail-loud scope boundaries.
+The implemented slices include reconciliation and statutory loss set-off; full
+rate math and complete-return orchestration remain separate work. Every
+statutory value is a `Rule` with a verified citation, and `buckets.py`
+classifies each income line into a tax-treatment bucket.
 
 AY 2026–27 ITR-2 and ITR-3 JSON Schemas are vendored under
 `official_contracts/` with source URLs, release dates, and SHA-256 pins. The
@@ -84,6 +86,25 @@ official presumptive fields; missing or non-cross-tying amounts and no-books
 F&O losses block drafting. An elected 44AD route for another business also
 requires its explicit share of other-business turnover; the 44AB(a) result
 stays under human review when that split is missing.
+
+`loss_setoff.py` consumes source-provenanced current income buckets and
+prior-year loss pools after the capital and trading slices are reconciled. It
+applies current capital/business restrictions before brought-forward pools,
+uses restricted pools before flexible pools and prior pools oldest-first,
+keeps VDA loss outside set-off/carry-forward, and blocks incomplete prior-return
+or current timeliness evidence. A source-provenanced coverage fact must confirm
+all supported current-income buckets and the complete prior-loss history, so an
+omitted source cannot silently become zero. It emits cross-tied Schedule CG current-loss,
+Schedule BP current-business, CYLA, BFLA, CFL, and Part B-TI values for ITR-2
+or ITR-3 and validates mandatory target orders as exhaustive permutations.
+Projection fails closed unless upstream Part B-TI source-income fields and, for
+capital facts, all Schedule CG source/aggregate totals reconcile. ITR-3 raw
+business results and the Schedule-BP current-business loss source must also
+cross-tie. Nonzero unsupported or unmodelled loss paths are never replaced with
+zero. Form-specific output deltas and audit bindings cover every scalar filing
+value and retain the human coverage and return-timeliness evidence that
+controls carry-forward. A no-capital recomputation also emits an audited
+removal operation so stale Schedule CG data cannot survive changed inputs.
 
 Install test dependencies and run tests:
 

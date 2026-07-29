@@ -261,6 +261,14 @@ provide only broker trading summaries. Summary-only results remain provisional
 until a human explicitly accepts the evidence gap; the blocker and acceptance
 remain in the audit history.
 
+For any negative capital/trading result, prior-year loss, Schedule CFL balance,
+or carry-forward claim, read `references/loss-setoff-carry-forward.md` in full.
+Collect the prior return amount, category, origin AY, filing date, due date, and
+source provenance. Ask the human to confirm complete current-income-bucket and
+prior-loss-history coverage, including explicit zero/none answers. Missing
+coverage or evidence blocks and requires human input; never silently omit a
+pool or assume timeliness.
+
 ## The portal: fill, confirm, validate
 
 The e-filing SPA has specific, repeatable quirks (logout pop-ups on navigation,
@@ -309,6 +317,9 @@ challan and source documents.
 - `references/trading-business.md` — intraday/F&O classification, deterministic
   P&L and ICAI turnover, broker reconciliation, tax-audit applicability, and
   ITR-3 handoff.
+- `references/loss-setoff-carry-forward.md` — verified current/prior loss
+  ordering, evidence requirements, CYLA/BFLA/CFL cross-ties, and filing-date
+  blockers.
 - `references/virtual-digital-assets.md` — crypto/NFT (VDA) taxation: flat 30%
   u/s 115BBH, no loss set-off, 1% TDS u/s 194S, Schedule VDA reporting.
 - `references/portal-workflow.md` — step-by-step portal navigation, every known

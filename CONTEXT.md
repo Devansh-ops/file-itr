@@ -148,6 +148,30 @@ Schedule BP without inventing a rate split, retained with their own source
 provenance.
 _Avoid_: Presumptive estimate, automatic 44AD election
 
+**Loss pool**:
+A source-provenanced current-year or brought-forward amount under one statutory
+loss category and origin assessment year, with the filing evidence needed to
+establish whether it remains available.
+_Avoid_: Broker loss, negative income
+
+**Loss input coverage**:
+A source-provenanced human confirmation that every supported current-income
+bucket and the complete prior-loss history have been addressed, including
+explicit zero/none answers.
+_Avoid_: Missing means zero, assumed complete
+
+**Set-off allocation**:
+One deterministic application from a loss pool to an eligible income bucket,
+recording phase, statutory rule, target, amount, and evidence lineage.
+_Avoid_: Netting entry, loss adjustment
+
+**Loss adjustment slice**:
+The cross-tied Schedule CG/BP/CYLA/BFLA/CFL and Part B-TI projection generated
+from complete loss pools and taxable income buckets. It applies only after its
+source-income fields reconcile to upstream return schedules and binds every
+projected scalar to the exact ITR-2 or ITR-3 output path and evidence lineage.
+_Avoid_: Carry-forward total, edited CFL
+
 **Filing slice**:
 An auditable, deterministic subset of return schedules produced for one income
 or credit domain; it is not a complete return.
