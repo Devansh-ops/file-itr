@@ -36,6 +36,14 @@ claiming the absent TDS credit. It remains blocked until the evidence is fixed
 or a human explicitly accepts filing the unchanged Schedule OS/TDS values
 without that credit; the strict filing-slice API continues to fail closed.
 
+`securities.py` accepts a versioned delivery-security ledger and runs FIFO
+separately for each custody account and ISIN. Linked own-account transfers
+preserve lot dates, cost, grandfathering attributes, and evidence; split and
+bonus actions are supported while unknown actions fail closed. Broker gross
+sales and closing positions must reconcile before the immutable Schedule CG and
+112A slice or schema-validated ITR-2 draft is produced. Deductible charges and
+non-deductible STT are reported separately.
+
 Install test dependencies and run tests:
 
 ```console

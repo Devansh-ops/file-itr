@@ -57,6 +57,22 @@ A duplicate, contradiction, invalid schema, broken invariant, or other defect
 that must be corrected and recomputed and can never be accepted by override.
 _Avoid_: Eligible risk, caveat
 
+**Custody account**:
+One demat or broker custody location whose security lots have an independent
+FIFO queue.
+_Avoid_: Portfolio-wide pool
+
+**Tax lot**:
+A quantity with one original acquisition date, cost basis, and evidence
+lineage, including after an own-account transfer.
+_Avoid_: Average cost, broker holding
+
+**Linked own-account transfer**:
+One non-disposal movement between the taxpayer's custody accounts that consumes
+the source account's FIFO lots and recreates them in the destination without
+changing their dates or basis.
+_Avoid_: Sale and repurchase, fresh acquisition
+
 **Filing slice**:
 An auditable, deterministic subset of return schedules produced for one income
 or credit domain; it is not a complete return.
