@@ -24,6 +24,18 @@ blocks duplicates, unexplained portal entries, amount mismatches, missing 26AS
 credits, and unresolved ownership before generating Schedule OS, Schedule
 TDS2, an audit trace, and an ITR-2 draft.
 
+`readiness.py` keeps provisional, blocked, independently filing-ready, and
+filing-ready-by-human-override states distinct. Human acceptances live in an
+immutable, hash-chained decision journal, retain their original blockers,
+identify actor/time/reason/evidence/affected outputs, and are bound to a
+deterministic computation-context value. Integrity failures and reconciliation
+gaps that prevent safe computation remain non-overridable.
+
+The bank-interest orchestration can safely compute a missing-26AS case without
+claiming the absent TDS credit. It remains blocked until the evidence is fixed
+or a human explicitly accepts filing the unchanged Schedule OS/TDS values
+without that credit; the strict filing-slice API continues to fail closed.
+
 Install test dependencies and run tests:
 
 ```console

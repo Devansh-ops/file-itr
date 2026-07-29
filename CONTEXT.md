@@ -40,6 +40,23 @@ An unresolved duplicate, mismatch, missing explanation, ownership question, or
 unsupported fact that prevents independent filing readiness.
 _Avoid_: Warning, adjustment
 
+**Decision journal**:
+A hash-chained, append-only log spanning recomputations; each human risk
+decision is bound to one computation context and names its actor, time, reason,
+evidence, and affected outputs.
+_Avoid_: Manual adjustment, edited total
+
+**Readiness assessment**:
+The deterministic result of evaluating computation basis, all original
+blockers, and the decision journal as provisional, blocked, independently
+filing-ready, or filing-ready by human override.
+_Avoid_: Approval flag, final status
+
+**Integrity failure**:
+A duplicate, contradiction, invalid schema, broken invariant, or other defect
+that must be corrected and recomputed and can never be accepted by override.
+_Avoid_: Eligible risk, caveat
+
 **Filing slice**:
 An auditable, deterministic subset of return schedules produced for one income
 or credit domain; it is not a complete return.

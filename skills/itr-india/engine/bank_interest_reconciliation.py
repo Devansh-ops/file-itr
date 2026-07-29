@@ -3,7 +3,7 @@ from __future__ import annotations
 from collections import defaultdict
 from dataclasses import dataclass
 from decimal import Decimal
-from typing import Any
+from typing import Iterable
 
 from engine.bank_interest_ledger import (
     BankInterestEvidenceRow,
@@ -20,6 +20,7 @@ class ReconciliationBlocker:
     code: str
     message: str
     event_ids: tuple[str, ...] = ()
+    evidence_references: tuple[str, ...] = ()
 
 
 class BankReconciliationError(ValueError):
@@ -30,6 +31,7 @@ class BankReconciliationError(ValueError):
                 key=lambda blocker: (
                     blocker.code,
                     blocker.event_ids,
+                    blocker.evidence_references,
                     blocker.message,
                 ),
             )
@@ -61,9 +63,15 @@ class ReconciledInterestEvent:
     sources: tuple[SourceProvenance, ...]
 
 
-def reconcile_bank_interest(
+@dataclass(frozen=True)
+class BankReconciliationResult:
+    events: tuple[ReconciledInterestEvent, ...]
+    blockers: tuple[ReconciliationBlocker, ...]
+
+
+def inspect_bank_interest_reconciliation(
     ledger: BankInterestLedger,
-) -> tuple[ReconciledInterestEvent, ...]:
+) -> BankReconciliationResult:
     blockers: list[ReconciliationBlocker] = []
     evidence_rows = sorted(
         ledger.evidence_rows,
@@ -97,6 +105,7 @@ def reconcile_bank_interest(
                         "DUPLICATE_EVIDENCE",
                         f"{event_id} has {len(typed_rows)} {evidence_type.value} rows",
                         (event_id,),
+                        _evidence_refs(typed_rows),
                     )
                 )
 
@@ -107,6 +116,7 @@ def reconcile_bank_interest(
                     "UNEXPLAINED_PORTAL_ENTRY",
                     f"{event_id} has AIS/26AS evidence without a bank anchor",
                     (event_id,),
+                    _evidence_refs(event_rows),
                 )
             )
             continue
@@ -123,6 +133,7 @@ def reconcile_bank_interest(
                     "OWNERSHIP_UNRESOLVED",
                     f"{event_id} account {bank.account_id} is not established as 100% self-owned",
                     (event_id,),
+                    _evidence_refs((bank,)),
                 )
             )
 
@@ -138,6 +149,7 @@ def reconcile_bank_interest(
                         "EVENT_METADATA_MISMATCH",
                         f"{event_id} evidence maps to different accounts, kinds, or periods",
                         (event_id,),
+                        _evidence_refs((bank, row)),
                     )
                 )
             if row.gross_interest != bank.gross_interest:
@@ -147,6 +159,7 @@ def reconcile_bank_interest(
                         f"{event_id} bank amount {bank.gross_interest} does not match "
                         f"{row.evidence_type.value} amount {row.gross_interest}",
                         (event_id,),
+                        _evidence_refs((bank, row)),
                     )
                 )
 
@@ -159,6 +172,7 @@ def reconcile_bank_interest(
                     "TDS_MISMATCH",
                     f"{event_id} contains inconsistent TDS amounts",
                     (event_id,),
+                    _evidence_refs(event_rows),
                 )
             )
         stated_tans = {
@@ -170,6 +184,7 @@ def reconcile_bank_interest(
                     "TAN_MISMATCH",
                     f"{event_id} contains inconsistent deductor TANs",
                     (event_id,),
+                    _evidence_refs(event_rows),
                 )
             )
 
@@ -184,6 +199,7 @@ def reconcile_bank_interest(
                     "MISSING_26AS_CREDIT",
                     f"{event_id} reports TDS but has no Form 26AS credit",
                     (event_id,),
+                    _evidence_refs(event_rows),
                 )
             )
         if form_26as_rows:
@@ -216,9 +232,29 @@ def reconcile_bank_interest(
             )
         )
 
-    if blockers:
-        raise BankReconciliationError(blockers)
-    return tuple(sorted(events, key=lambda event: event.event_id))
+    return BankReconciliationResult(
+        events=tuple(sorted(events, key=lambda event: event.event_id)),
+        blockers=tuple(
+            sorted(
+                blockers,
+                key=lambda blocker: (
+                    blocker.code,
+                    blocker.event_ids,
+                    blocker.evidence_references,
+                    blocker.message,
+                ),
+            )
+        ),
+    )
+
+
+def reconcile_bank_interest(
+    ledger: BankInterestLedger,
+) -> tuple[ReconciledInterestEvent, ...]:
+    result = inspect_bank_interest_reconciliation(ledger)
+    if result.blockers:
+        raise BankReconciliationError(list(result.blockers))
+    return result.events
 
 
 def _check_duplicate_sources(
@@ -236,6 +272,7 @@ def _check_duplicate_sources(
                     "DUPLICATE_SOURCE",
                     "The same source location was imported more than once",
                     event_ids,
+                    _evidence_refs(duplicates),
                 )
             )
 
@@ -244,22 +281,26 @@ def _check_account_metadata(
     evidence_rows: list[BankInterestEvidenceRow],
     blockers: list[ReconciliationBlocker],
 ) -> None:
-    by_account: dict[str, set[tuple[Any, ...]]] = defaultdict(set)
+    by_account: dict[str, list[BankInterestEvidenceRow]] = defaultdict(list)
     for row in evidence_rows:
-        by_account[row.account_id].add(
+        by_account[row.account_id].append(row)
+    for account_id, account_rows in sorted(by_account.items()):
+        identities = {
             (
                 row.bank_name,
                 row.account_last4,
                 row.ownership,
                 row.ownership_share,
             )
-        )
-    for account_id, identities in sorted(by_account.items()):
+            for row in account_rows
+        }
         if len(identities) > 1:
             blockers.append(
                 ReconciliationBlocker(
                     "ACCOUNT_METADATA_MISMATCH",
                     f"Account {account_id} has inconsistent identity or ownership metadata",
+                    tuple(sorted({row.event_id for row in account_rows})),
+                    _evidence_refs(account_rows),
                 )
             )
 
@@ -280,5 +321,14 @@ def _check_duplicate_bank_anchors(
                     "DUPLICATE_BANK_EVENT",
                     "One bank anchor is assigned to multiple economic event IDs",
                     event_ids,
+                    _evidence_refs(duplicates),
                 )
             )
+
+
+def _evidence_refs(
+    evidence_rows: Iterable[BankInterestEvidenceRow],
+) -> tuple[str, ...]:
+    return tuple(
+        sorted({row.evidence_reference for row in evidence_rows})
+    )

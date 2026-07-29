@@ -1,5 +1,6 @@
 import copy
 import json
+from datetime import datetime, timezone
 from decimal import Decimal
 from pathlib import Path
 
@@ -11,9 +12,17 @@ from engine.bank_interest import (
     LedgerVersionError,
     build_bank_interest_itr2_draft,
     compute_bank_interest_slice,
+    compute_bank_interest_with_readiness,
     load_bank_interest_ledger,
 )
 from engine.contracts import OfficialContractRegistry
+from engine.readiness import (
+    BlockerOverridePolicy,
+    DecisionAction,
+    DecisionJournal,
+    FilingReadiness,
+    HumanDecision,
+)
 
 
 FIXTURES = Path(__file__).parent / "fixtures" / "contracts"
@@ -378,6 +387,57 @@ def test_bank_reported_tds_without_26as_credit_blocks():
         )
 
     assert "MISSING_26AS_CREDIT" in exc.value.blocker_codes
+
+
+def test_real_bank_recomputation_consumes_decision_without_editing_totals():
+    records = [
+        _record(
+            "fd-1",
+            "bank_statement",
+            source_n=3,
+            interest_kind="term_deposit",
+            gross_interest="5000",
+            tds_amount="500",
+            deductor_tan="DELA12345B",
+        )
+    ]
+    ledger = load_bank_interest_ledger(_ledger(records)).ledger
+    empty_journal = DecisionJournal.empty("ay2026-27:bank-interest")
+
+    blocked = compute_bank_interest_with_readiness(ledger, empty_journal)
+    (blocker,) = blocked.readiness.blockers
+    decision = HumanDecision(
+        decision_id="accept-unclaimed-tds-credit",
+        blocker_id=blocker.blocker_id,
+        action=DecisionAction.ACCEPT_RISK,
+        actor="Devansh Sehgal",
+        decided_at=datetime(2026, 7, 29, 12, 30, tzinfo=timezone.utc),
+        reason="File the interest income without claiming the missing TDS credit.",
+        evidence_references=("human-note.md#fd-1-unclaimed-credit",),
+        affected_outputs=blocker.affected_outputs,
+        context_fingerprint=blocked.readiness.context_fingerprint,
+    )
+
+    overridden = compute_bank_interest_with_readiness(
+        ledger,
+        empty_journal.append(decision),
+    )
+
+    assert blocked.readiness.state is FilingReadiness.BLOCKED
+    assert blocker.override_policy is BlockerOverridePolicy.ELIGIBLE
+    assert blocker.evidence_references == ("bank_statement:fd-1",)
+    assert overridden.readiness.state is (
+        FilingReadiness.FILING_READY_BY_HUMAN_OVERRIDE
+    )
+    assert overridden.readiness.blockers == (blocker,)
+    assert overridden.readiness.accepted_risks == (blocker,)
+    assert blocked.filing_slice is not None
+    assert overridden.filing_slice is not None
+    assert blocked.filing_slice.canonical_json() == (
+        overridden.filing_slice.canonical_json()
+    )
+    assert overridden.filing_slice.total_interest == Decimal("5000")
+    assert overridden.filing_slice.tds_claimed == Decimal("0")
 
 
 def test_26as_row_must_itself_confirm_claimed_tds_and_tan():
