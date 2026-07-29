@@ -1,6 +1,6 @@
 from datetime import date
 from decimal import Decimal
-from engine.rulebase import Rule, RuleTable
+from engine.rulebase import Rule, RuleConfidence, RuleTable
 
 _CLEARTAX_STCG = "https://cleartax.in/s/short-term-capital-gain-on-shares"
 _QUICKO_HP = "https://learn.quicko.com/capital-gains-holding-period-tax"
@@ -44,27 +44,36 @@ TABLE = RuleTable([
     Rule(key="holding.listed_equity.lt_months", value=12,
          authority="s.2(42A) proviso — listed securities / equity-oriented units",
          source_primary=_IK_2_42A, source_secondary=_CLEARTAX_STCG,
-         effective_from=date(2025, 4, 1), effective_to=None, confidence="settled"),
+         effective_from=date(2025, 4, 1), effective_to=None,
+         confidence=RuleConfidence.VERIFIED),
     Rule(key="holding.listed_nonequity.lt_months", value=12,
          authority="s.2(42A) — listed non-equity units, units acquired on/after 1-Apr-2025",
          source_primary=_IK_2_42A, source_secondary=_QUICKO_HP,
-         effective_from=date(2025, 4, 1), effective_to=None, confidence="contested",
-         contested_note="Units acquired 23-Jul-2024..31-Mar-2025 carried a 24-month "
-                        "transitional threshold; 12-month applies for acquisitions on/after 1-Apr-2025."),
+         effective_from=date(2025, 4, 1), effective_to=None,
+         confidence=RuleConfidence.CONTESTED,
+         confidence_note="Units acquired 23-Jul-2024..31-Mar-2025 carried a 24-month "
+                         "transitional threshold; 12-month applies for acquisitions on/after 1-Apr-2025."),
     Rule(key="holding.other.lt_months", value=24,
          authority="s.2(42A) — other capital assets",
          source_primary=_IK_2_42A, source_secondary=_QUICKO_HP,
-         effective_from=date(2025, 4, 1), effective_to=None, confidence="settled"),
+         effective_from=date(2025, 4, 1), effective_to=None,
+         confidence=RuleConfidence.VERIFIED),
     Rule(key="s50aa.acquired_from", value=date(2023, 4, 1),
          authority="s.50AA — specified mutual fund; units acquired on/after 1-Apr-2023",
          source_primary=_IK_50AA, source_secondary=_CLEARTAX_50AA,
-         effective_from=date(2023, 4, 1), effective_to=None, confidence="settled"),
+         effective_from=date(2023, 4, 1), effective_to=None,
+         confidence=RuleConfidence.VERIFIED),
     Rule(key="s50aa.applies", value=True,
          authority="s.50AA — specified MF gains always short-term (slab), any holding",
          source_primary=_IK_50AA, source_secondary=_CLEARTAX_50AA,
-         effective_from=date(2023, 4, 1), effective_to=None, confidence="settled"),
+         effective_from=date(2023, 4, 1), effective_to=None,
+         confidence=RuleConfidence.CONTESTED,
+         confidence_note="The currently pinned primary text supports this result only by "
+                         "inference; direct operative deeming text must be pinned before the "
+                         "rule can be verified."),
     Rule(key="s115bbh.applies", value=Decimal("0.30"),
          authority="s.115BBH — VDA gains taxed at flat 30%, any holding period",
          source_primary=_IK_115BBH, source_secondary=_QUICKO_VDA,
-         effective_from=date(2022, 4, 1), effective_to=None, confidence="settled"),
+         effective_from=date(2022, 4, 1), effective_to=None,
+         confidence=RuleConfidence.VERIFIED),
 ])

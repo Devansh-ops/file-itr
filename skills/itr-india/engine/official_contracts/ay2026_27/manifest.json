@@ -1,0 +1,44 @@
+{
+  "manifest_version": 1,
+  "assessment_year": "2026-27",
+  "retrieved_at": "2026-07-29",
+  "portal_index_url": "https://www.incometax.gov.in/iec/foportal/downloads/income-tax-returns?mobile-app=1",
+  "contracts": [
+    {
+      "form": "ITR-2",
+      "schema": {
+        "version": "1.1",
+        "release_date": "2026-06-30",
+        "source_url": "https://www.incometax.gov.in/iec/foportal/sites/default/files/2026-06/ITR-2_2026_Main_V1.1.json",
+        "sha256": "77be18189ecac94c7ed22baaa5e3bb46e238f781f55b9e2a8f6547f1e8e00ec8",
+        "local_path": "schemas/ITR-2_2026_Main_V1.1.json",
+        "json_schema_draft": "draft-04"
+      },
+      "validation_rules": {
+        "version": "1.0",
+        "release_date": "2026-05-26",
+        "source_url": "https://www.incometax.gov.in/iec/foportal/sites/default/files/2026-05/CBDT__e-Filing_ITR%202_Validation%20Rules_AY%202026-27_V1.0.pdf",
+        "sha256": "2321c5ba2469d3c9eaeee40d906b99abe56176782d547e6d0ec09ffdb529550b",
+        "local_path": "validation-rules/ITR-2_Validation_Rules_AY2026-27_V1.0.pdf"
+      }
+    },
+    {
+      "form": "ITR-3",
+      "schema": {
+        "version": "1.1",
+        "release_date": "2026-06-30",
+        "source_url": "https://www.incometax.gov.in/iec/foportal/sites/default/files/2026-07/ITR-3_2026_Main_V1.1.json",
+        "sha256": "66f4bd705e0e0788fdacb37eb297ace56749d791b84f2f170f4da84236c25e8b",
+        "local_path": "schemas/ITR-3_2026_Main_V1.1.json",
+        "json_schema_draft": "draft-04"
+      },
+      "validation_rules": {
+        "version": "1.0",
+        "release_date": "2026-06-18",
+        "source_url": "https://www.incometax.gov.in/iec/foportal/sites/default/files/2026-06/CBDT_e-filing_ITR-3_Validation%20Rules_V1.0_AY%2026-27.pdf",
+        "sha256": "60334e821eef769b1af2826b7e8ca2f1aeb76b302886473ed5fec6a0b7cc9d5d",
+        "local_path": "validation-rules/ITR-3_Validation_Rules_AY2026-27_V1.0.pdf"
+      }
+    }
+  ]
+}

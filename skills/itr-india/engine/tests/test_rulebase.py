@@ -1,6 +1,13 @@
 from datetime import date
 import pytest
-from engine.rulebase import Rule, RuleValidationError, validate_rule, RuleTable
+from engine.rulebase import (
+    Rule,
+    RuleConfidence,
+    RuleReadinessError,
+    RuleValidationError,
+    validate_rule,
+    RuleTable,
+)
 
 
 def _complete_rule(**over):
@@ -10,7 +17,7 @@ def _complete_rule(**over):
         source_primary="https://indiankanoon.org/doc/? (s.2(42A))",
         source_secondary="https://cleartax.in/s/short-term-capital-gain-on-shares",
         effective_from=date(2025, 4, 1), effective_to=None,
-        confidence="settled", contested_note="",
+        confidence=RuleConfidence.VERIFIED, confidence_note="",
     )
     base.update(over)
     return Rule(**base)
@@ -27,7 +34,37 @@ def test_missing_primary_source_fails():
 
 def test_contested_rule_needs_note():
     with pytest.raises(RuleValidationError):
-        validate_rule(_complete_rule(confidence="contested", contested_note=""))
+        validate_rule(_complete_rule(confidence=RuleConfidence.CONTESTED, confidence_note=""))
+
+
+def test_unsupported_rule_needs_note():
+    with pytest.raises(RuleValidationError):
+        validate_rule(_complete_rule(confidence=RuleConfidence.UNSUPPORTED, confidence_note=""))
+
+
+def test_unsupported_rule_blocks_independent_filing_readiness():
+    rule = _complete_rule(
+        confidence=RuleConfidence.UNSUPPORTED,
+        confidence_note="No authoritative AY 2026-27 rule has been pinned.",
+    )
+    table = RuleTable([rule])
+
+    with pytest.raises(RuleReadinessError, match="unsupported"):
+        table.require_filing_ready([rule.key], on=date(2025, 6, 1))
+
+
+def test_verified_rule_is_independently_filing_ready():
+    rule = _complete_rule()
+
+    RuleTable([rule]).require_filing_ready([rule.key], on=date(2025, 6, 1))
+
+
+def test_empty_rule_usage_evidence_is_not_filing_ready():
+    with pytest.raises(RuleReadinessError, match="no rule usage evidence"):
+        RuleTable([_complete_rule()]).require_filing_ready(
+            [],
+            on=date(2025, 6, 1),
+        )
 
 
 def test_swapped_effective_window_fails():

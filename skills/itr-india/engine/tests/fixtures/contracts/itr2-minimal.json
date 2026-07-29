@@ -1,0 +1,254 @@
+{
+  "ITR": {
+    "ITR2": {
+      "CreationInfo": {
+        "SWVersionNo": "1.0",
+        "SWCreatedBy": "SW00000001",
+        "JSONCreatedBy": "SW00000001",
+        "JSONCreationDate": "2026-07-29",
+        "IntermediaryCity": "Delhi",
+        "Digest": "-"
+      },
+      "Form_ITR2": {
+        "FormName": "ITR-2",
+        "Description": "Official schema smoke fixture",
+        "AssessmentYear": "2026",
+        "SchemaVer": "Ver1.0",
+        "FormVer": "Ver1.0"
+      },
+      "PartA_GEN1": {
+        "PersonalInfo": {
+          "AssesseeName": {
+            "SurNameOrOrgName": "TEST"
+          },
+          "PAN": "AAAPA0001A",
+          "Address": {
+            "ResidenceNo": "1",
+            "LocalityOrArea": "TEST",
+            "CityOrTownOrDistrict": "Delhi",
+            "StateCode": "07",
+            "CountryCode": "91",
+            "CountryCodeMobile": 91,
+            "MobileNo": 9999999999,
+            "EmailAddress": "test@example.com"
+          },
+          "SecondaryAdd": "N",
+          "DOB": "1990-01-01",
+          "Status": "I"
+        },
+        "FilingStatus": {
+          "ReturnFileSec": 11,
+          "OptOutNewTaxRegime": "N",
+          "SeventhProvisio139": "N",
+          "ResidentialStatus": "RES",
+          "HeldUnlistedEqShrPrYrFlg": "N",
+          "FiiFpiFlag": "N",
+          "ItrFilingDueDate": "2026-07-31"
+        }
+      },
+      "ScheduleCYLA": {
+        "STCG20Per": {
+          "IncCYLA": {
+            "IncOfCurYrUnderThatHead": 0,
+            "IncOfCurYrAfterSetOff": 0
+          }
+        },
+        "STCG30Per": {
+          "IncCYLA": {
+            "IncOfCurYrUnderThatHead": 0,
+            "IncOfCurYrAfterSetOff": 0
+          }
+        },
+        "STCGAppRate": {
+          "IncCYLA": {
+            "IncOfCurYrUnderThatHead": 0,
+            "IncOfCurYrAfterSetOff": 0
+          }
+        },
+        "STCGDTAARate": {
+          "IncCYLA": {
+            "IncOfCurYrUnderThatHead": 0,
+            "IncOfCurYrAfterSetOff": 0
+          }
+        },
+        "LTCG12_5Per": {
+          "IncCYLA": {
+            "IncOfCurYrUnderThatHead": 0,
+            "IncOfCurYrAfterSetOff": 0
+          }
+        },
+        "LTCGDTAARate": {
+          "IncCYLA": {
+            "IncOfCurYrUnderThatHead": 0,
+            "IncOfCurYrAfterSetOff": 0
+          }
+        },
+        "TotalCurYr": {
+          "TotHPlossCurYr": 0,
+          "TotOthSrcLossNoRaceHorse": 0
+        },
+        "TotalLossSetOff": {
+          "TotHPlossCurYrSetoff": 0,
+          "TotOthSrcLossNoRaceHorseSetoff": 0
+        },
+        "LossRemAftSetOff": {
+          "BalHPlossCurYrAftSetoff": 0,
+          "BalOthSrcLossNoRaceHorseAftSetoff": 0
+        }
+      },
+      "ScheduleBFLA": {
+        "Salary": {
+          "IncBFLA": {
+            "IncOfCurYrUndHeadFromCYLA": 0,
+            "IncOfCurYrAfterSetOffBFLosses": 0
+          }
+        },
+        "STCG20Per": {
+          "IncBFLA": {
+            "IncOfCurYrUndHeadFromCYLA": 0,
+            "IncOfCurYrAfterSetOffBFLosses": 0,
+            "BFlossPrevYrUndSameHeadSetoff": 0
+          }
+        },
+        "STCG30Per": {
+          "IncBFLA": {
+            "IncOfCurYrUndHeadFromCYLA": 0,
+            "IncOfCurYrAfterSetOffBFLosses": 0,
+            "BFlossPrevYrUndSameHeadSetoff": 0
+          }
+        },
+        "STCGAppRate": {
+          "IncBFLA": {
+            "IncOfCurYrUndHeadFromCYLA": 0,
+            "IncOfCurYrAfterSetOffBFLosses": 0,
+            "BFlossPrevYrUndSameHeadSetoff": 0
+          }
+        },
+        "STCGDTAARate": {
+          "IncBFLA": {
+            "IncOfCurYrUndHeadFromCYLA": 0,
+            "IncOfCurYrAfterSetOffBFLosses": 0,
+            "BFlossPrevYrUndSameHeadSetoff": 0
+          }
+        },
+        "LTCG12_5Per": {
+          "IncBFLA": {
+            "IncOfCurYrUndHeadFromCYLA": 0,
+            "IncOfCurYrAfterSetOffBFLosses": 0,
+            "BFlossPrevYrUndSameHeadSetoff": 0
+          }
+        },
+        "LTCGDTAARate": {
+          "IncBFLA": {
+            "IncOfCurYrUndHeadFromCYLA": 0,
+            "IncOfCurYrAfterSetOffBFLosses": 0,
+            "BFlossPrevYrUndSameHeadSetoff": 0
+          }
+        },
+        "IncomeOfCurrYrAftCYLABFLA": 0,
+        "TotalBFLossSetOff": {
+          "TotBFLossSetoff": 0
+        }
+      },
+      "PartB-TI": {
+        "Salaries": 0,
+        "IncomeFromHP": 0,
+        "CapGain": {
+          "ShortTerm": {
+            "ShortTerm20Per": 0,
+            "ShortTerm30Per": 0,
+            "ShortTermAppRate": 0,
+            "ShortTermSplRateDTAA": 0,
+            "TotalShortTerm": 0
+          },
+          "LongTerm": {
+            "LongTerm12_5Per": 0,
+            "LongTermSplRateDTAA": 0,
+            "TotalLongTerm": 0
+          },
+          "ShortTermLongTermTotal": 0,
+          "CapGains30Per115BBH": 0,
+          "TotalCapGains": 0
+        },
+        "IncFromOS": {
+          "OtherSrcThanOwnRaceHorse": 0,
+          "IncChargblSplRate": 0,
+          "FromOwnRaceHorse": 0,
+          "TotIncFromOS": 0
+        },
+        "TotalTI": 0,
+        "CurrentYearLoss": 0,
+        "BalanceAfterSetoffLosses": 0,
+        "BroughtFwdLossesSetoff": 0,
+        "GrossTotalIncome": 0,
+        "IncChargeTaxSplRate111A112": 0,
+        "DeductionsUnderScheduleVIA": 0,
+        "TotalIncome": 0,
+        "IncChargeableTaxSplRates": 0,
+        "NetAgricultureIncomeOrOtherIncomeForRate": 0,
+        "AggregateIncome": 0,
+        "LossesOfCurrentYearCarriedFwd": 0,
+        "DeemedIncomeUs115JC": 0
+      },
+      "PartB_TTI": {
+        "TaxPayDeemedTotIncUs115JC": 0,
+        "Surcharge": 0,
+        "HealthEduCess": 0,
+        "TotalTaxPayablDeemedTotInc": 0,
+        "ComputationOfTaxLiability": {
+          "TaxPayableOnTI": {
+            "TaxAtNormalRatesOnAggrInc": 0,
+            "TaxAtSpecialRates": 0,
+            "RebateOnAgriInc": 0,
+            "TaxPayableOnTotInc": 0
+          },
+          "Rebate87A": 0,
+          "TaxPayableOnRebate": 0,
+          "Surcharge25ofSI": 0,
+          "SurchargeOnAboveCrore": 0,
+          "Surcharge25ofSIBeforeMarginal": 0,
+          "SurchargeOnAboveCroreBeforeMarginal": 0,
+          "TotalSurcharge": 0,
+          "EducationCess": 0,
+          "GrossTaxLiability": 0,
+          "GrossTaxPayable": 0,
+          "CreditUS115JD": 0,
+          "TaxPayAfterCreditUs115JD": 0,
+          "NetTaxLiability": 0,
+          "IntrstPay": {
+            "IntrstPayUs234A": 0,
+            "IntrstPayUs234B": 0,
+            "IntrstPayUs234C": 0,
+            "LateFilingFee234F": 0,
+            "TotalIntrstPay": 0
+          },
+          "AggregateTaxInterestLiability": 0
+        },
+        "TaxPaid": {
+          "TaxesPaid": {
+            "AdvanceTax": 0,
+            "TDS": 0,
+            "TCS": 0,
+            "SelfAssessmentTax": 0,
+            "TotalTaxesPaid": 0
+          }
+        },
+        "Refund": {
+          "RefundDue": 0,
+          "BankAccountDtls": {
+            "BankDtlsFlag": "N"
+          }
+        },
+        "AssetOutIndiaFlag": "NO"
+      },
+      "Verification": {
+        "Declaration": {
+          "AssesseeVerName": "TEST",
+          "FatherName": "TEST",
+          "AssesseeVerPAN": "AAAPA0001A"
+        },
+        "Capacity": "S"
+      }
+    }
+  }
+}

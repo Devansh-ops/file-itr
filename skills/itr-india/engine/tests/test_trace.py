@@ -2,7 +2,7 @@ from datetime import date
 from decimal import Decimal
 import pytest
 from engine.model import AssetClass, CapitalGainItem, VdaItem
-from engine.rulebase import RuleTable
+from engine.rulebase import Rule, RuleConfidence, RuleTable
 from engine.rules.ay2026_27 import TABLE
 from engine.trace import trace_bucketing
 
@@ -25,6 +25,26 @@ def test_trace_flags_contested_lines():
                            Decimal("20000"), Decimal("0"))
     tr = trace_bucketing([item], TABLE, REF)
     assert len(tr.contested()) == 1
+
+
+def test_trace_preserves_unsupported_confidence():
+    item = CapitalGainItem(AssetClass.LISTED_EQUITY_STT, date(2024, 1, 1), date(2024, 11, 1),
+                           Decimal("30000"), Decimal("0"), stt_paid=True)
+    unsupported = Rule(
+        key="holding.listed_equity.lt_months", value=12,
+        authority="test authority",
+        source_primary="https://www.incometax.gov.in/test-primary",
+        source_secondary="https://www.incometax.gov.in/test-secondary",
+        effective_from=date(2025, 4, 1), effective_to=None,
+        confidence=RuleConfidence.UNSUPPORTED, confidence_note="Direct authority is missing.",
+    )
+
+    tr = trace_bucketing([item], RuleTable([unsupported]), REF)
+
+    assert tr.lines[0].confidence == "unsupported"
+    assert tr.contested() == []
+    assert tr.unsupported() == tr.lines
+    assert "[UNSUPPORTED]" in tr.render()
 
 
 def test_trace_raises_when_rule_key_unresolvable():
