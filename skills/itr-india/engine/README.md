@@ -17,6 +17,13 @@ table and evaluates the rule keys recorded by the computation trace. Empty
 rule-usage evidence, unknown rules, and used contested/unsupported rules block
 readiness; unrelated rules do not.
 
+The bank-interest filing slice in `bank_interest.py` accepts a versioned
+normalized ledger, explicitly migrates the legacy v0.1 shape to v1.0, and
+reconciles bank-statement, AIS, and Form 26AS evidence by economic event. It
+blocks duplicates, unexplained portal entries, amount mismatches, missing 26AS
+credits, and unresolved ownership before generating Schedule OS, Schedule
+TDS2, an audit trace, and an ITR-2 draft.
+
 Install test dependencies and run tests:
 
 ```console
